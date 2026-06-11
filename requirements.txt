@@ -1,0 +1,19 @@
+"""
+BCI Mouse Control - Dependencies
+=================================
+Core requirements for the BCI Mouse Control application.
+"""
+
+# Core scientific stack
+brainflow>=5.10.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# GUI
+PyQt6>=6.5.0
+
+# Mouse control (cross-platform)
+pynput>=1.7.6
+
+# Serial port discovery
+pyserial>=3.5
