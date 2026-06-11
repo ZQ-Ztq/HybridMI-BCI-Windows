@@ -1,12 +1,10 @@
 # -*- mode: python ; coding: utf-8 -*-
 """
-HybridMI-BCI GUI — Windows PyInstaller spec
-============================================
-Supports both 32-bit and 64-bit Windows builds.
-Architecture is determined by the Python interpreter used to run PyInstaller:
-  - 32-bit Python → 32-bit .exe
-  - 64-bit Python → 64-bit .exe
+HybridMI-BCI GUI — Windows PyInstaller spec (单文件模式)
+=======================================================
+输出单个 .exe 文件，所有依赖打包在内。
 """
+
 import sys, os
 from PyInstaller.utils.hooks import collect_data_files, collect_dynamic_libs
 
@@ -17,7 +15,7 @@ ico_path = os.path.join(os.getcwd(), '软件图标.ico')
 a = Analysis(
     [os.path.join(src_path, 'main.py')],
     pathex=[src_path],
-    binaries=collect_dynamic_libs('brainflow'),
+    binaries=[],
     datas=[
         *collect_data_files('brainflow'),
         *collect_data_files('PyQt6'),
@@ -41,7 +39,6 @@ a = Analysis(
         'signal_processor',
         'brainflow_streamer',
         'mouse_controller',
-        # Windows-specific fallback
         'pynput',
         'pynput.mouse',
         'pynput._util',
@@ -60,24 +57,19 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 exe = EXE(
     pyz,
     a.scripts,
-    [],
-    exclude_binaries=True,
-    name='HybridMI-BCI',
+    a.binaries,
+    a.zipfiles,
+    a.datas,
+    name='HybridMI-BCI.exe',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
     console=False,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
     icon=ico_path if os.path.exists(ico_path) else None,
-)
-
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='HybridMI-BCI',
 )
