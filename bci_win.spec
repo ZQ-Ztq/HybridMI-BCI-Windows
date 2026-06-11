@@ -21,7 +21,7 @@ a = Analysis(
     datas=[
         *collect_data_files('brainflow'),
         *collect_data_files('PyQt6'),
-        (os.path.join(src_path, '软件图标.png'), '.'),
+        *([(os.path.join(src_path, '软件图标.png'), '.')] if os.path.exists(os.path.join(src_path, '软件图标.png')) else []),
     ],
     hiddenimports=[
         'brainflow',
@@ -62,7 +62,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='HybridMI_BCI',
+    name='HybridMI-BCI',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -79,5 +79,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='HybridMI_BCI',
+    name='HybridMI-BCI',
 )
